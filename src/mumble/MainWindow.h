@@ -100,7 +100,7 @@ public:
 	GlobalShortcut *gsToggleTalkingUI;
 	GlobalShortcut *gsToggleSearch;
 
-	DockTitleBar *dtbLogDockTitle, *dtbChatDockTitle;
+	DockTitleBar *dtbLogDockTitle, *dtbChatDockTitle, *dtbSidebarDockTitle;
 
 	ACLEditor *aclEdit;
 	BanEditor *banEdit;

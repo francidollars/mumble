@@ -163,6 +163,19 @@
     </property>
    </widget>
   </widget>
+  <widget class="QDockWidget" name="qdwSidebar">
+    <property name="features">
+      <set>QDockWidget::DockWidgetClosable|QDockWidget::DockWidgetMovable</set>
+    </property>
+    <property name="windowTitle">
+      <string>Sidebar</string>
+    </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="QTextBrowser" name="qteSidebar">
+   </widget>
+  </widget>
   <widget class="QToolBar" name="qtIconToolbar">
    <property name="windowTitle">
     <string>Icon Toolbar</string>

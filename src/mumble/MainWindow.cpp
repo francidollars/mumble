@@ -167,6 +167,7 @@ MainWindow::MainWindow(QWidget *p)
 	qtvUsers->setAccessibleName(tr("Channels and users"));
 	qteLog->setAccessibleName(tr("Activity log"));
 	qteChat->setAccessibleName(tr("Chat message"));
+	qteSidebar->setAccessibleName(tr("Sidebar"));
 	connect(qmUser, SIGNAL(aboutToShow()), this, SLOT(qmUser_aboutToShow()));
 	connect(qmChannel, SIGNAL(aboutToShow()), this, SLOT(qmChannel_aboutToShow()));
 	connect(qmListener, SIGNAL(aboutToShow()), this, SLOT(qmListener_aboutToShow()));
@@ -385,6 +386,12 @@ void MainWindow::setupGui() {
 	qdwChat->installEventFilter(dtbChatDockTitle);
 	qteChat->setDefaultText(tr("<center>Not connected</center>"), true);
 	qteChat->setEnabled(false);
+
+	dtbSidebarDockTitle = new DockTitleBar();
+	qdwSidebar->setTitleBarWidget(dtbSidebarDockTitle);
+	// QUrl qurlSidebar("file:///home/mickey/Projects/mumble_jm_dev/mumble/README.md");
+	qteSidebar->setSource(QUrl("file:///home/mickey/Projects/mumble-jm-dev/mumble/README.md"));
+	// qdwSidebar->installEventFilter(dtbSidebarDockTitle);
 
 	QWidget *dummyTitlebar = new QWidget(qdwMinimalViewNote);
 	qdwMinimalViewNote->setTitleBarWidget(dummyTitlebar);
@@ -636,6 +643,7 @@ void MainWindow::focusNextMainWidget() {
 	QWidget *mainFocusWidgets[] = {
 		qteLog,
 		qteChat,
+		qteSidebar,
 		qtvUsers,
 	};
 	const int numMainFocusWidgets = sizeof(mainFocusWidgets) / sizeof(mainFocusWidgets[0]);
@@ -1227,6 +1235,8 @@ void MainWindow::setupView(bool toggle_minimize) {
 			qdwLog->show();
 			splitDockWidget(qdwLog, qdwChat, Qt::Vertical);
 			qdwChat->show();
+			addDockWidget(Qt::RightDockWidgetArea, qdwSidebar);
+			qdwSidebar->show();
 			break;
 		case Settings::LayoutStacked:
 			removeDockWidget(qdwLog);
@@ -1234,6 +1244,8 @@ void MainWindow::setupView(bool toggle_minimize) {
 			qdwLog->show();
 			splitDockWidget(qdwLog, qdwChat, Qt::Vertical);
 			qdwChat->show();
+			addDockWidget(Qt::RightDockWidgetArea, qdwSidebar);
+			qdwSidebar->show();
 			break;
 		case Settings::LayoutHybrid:
 			removeDockWidget(qdwLog);
@@ -1242,6 +1254,8 @@ void MainWindow::setupView(bool toggle_minimize) {
 			qdwLog->show();
 			addDockWidget(Qt::BottomDockWidgetArea, qdwChat);
 			qdwChat->show();
+			addDockWidget(Qt::RightDockWidgetArea, qdwSidebar);
+			qdwSidebar->show();
 			break;
 		default:
 			break;
@@ -1250,6 +1264,7 @@ void MainWindow::setupView(bool toggle_minimize) {
 	updateToolbar();
 
 	qteChat->updateGeometry();
+	qteSidebar->updateGeometry();
 
 	QRect geom = frameGeometry();
 
@@ -1337,6 +1352,7 @@ void MainWindow::setupView(bool toggle_minimize) {
 	// Hide/Show respective UI elements
 	qdwLog->setVisible(showit);
 	qdwChat->setVisible(showit);
+	qdwSidebar->setVisible(showit);
 	qtIconToolbar->setVisible(showit);
 	menuBar()->setVisible(showit);
 
@@ -3239,6 +3255,8 @@ void MainWindow::serverDisconnected(QAbstractSocket::SocketError err, QString re
 	qaServerBanList->setEnabled(false);
 	qtvUsers->setCurrentIndex(QModelIndex());
 	qteChat->setEnabled(false);
+	// This might be unnecessary
+	qteSidebar->setEnabled(false);
 	updateTrayIcon();
 
 #ifdef Q_OS_MAC
